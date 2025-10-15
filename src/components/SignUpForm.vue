@@ -1,7 +1,7 @@
 <template>
-  <div class="login-container">
-    <h1>Welcome back!</h1>
-    <p class="subtitle">Please enter your details</p>
+  <div class="signup-container">
+    <h1>Create your account</h1>
+    <p class="subtitle">Join us today</p>
 
     <form @submit.prevent="handleSubmit">
       <!-- Error Message -->
@@ -15,17 +15,50 @@
       </div>
 
       <div class="form-group">
+        <label for="name">Full Name</label>
+        <div class="input-wrapper" :class="{ 'valid': nameTouched && nameValid, 'invalid': nameTouched && !nameValid && name }">
+          <input 
+            type="text" 
+            id="name" 
+            v-model="name" 
+            placeholder="John Doe" 
+            autocomplete="name"
+            :aria-required="true"
+            :disabled="isLoading"
+            :aria-invalid="nameTouched && !nameValid && name ? 'true' : 'false'"
+            :aria-describedby="nameTouched && !nameValid && name ? 'name-error' : undefined"
+            @focus="emit('field-focus', 'name'); clearError()"
+            @blur="nameTouched = true; emit('field-blur')"
+          >
+          <span v-if="nameTouched && nameValid" class="validation-icon valid-icon" aria-hidden="true">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <polyline points="20 6 9 17 4 12"></polyline>
+            </svg>
+          </span>
+          <span v-if="nameTouched && !nameValid && name" class="validation-icon invalid-icon" aria-hidden="true">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="12" cy="12" r="10"></circle>
+              <line x1="15" y1="9" x2="9" y2="15"></line>
+              <line x1="9" y1="9" x2="15" y2="15"></line>
+            </svg>
+          </span>
+        </div>
+        <span v-if="nameTouched && !nameValid && name" id="name-error" class="field-error" role="alert">Please enter your full name</span>
+      </div>
+
+      <div class="form-group">
         <label for="email">Email</label>
         <div class="input-wrapper" :class="{ 'valid': emailTouched && emailValid, 'invalid': emailTouched && !emailValid && email }">
           <input 
             type="email" 
             id="email" 
             v-model="email" 
+            placeholder="you@example.com" 
             autocomplete="email"
+            :aria-required="true"
             :disabled="isLoading"
             :aria-invalid="emailTouched && !emailValid && email ? 'true' : 'false'"
             :aria-describedby="emailTouched && !emailValid && email ? 'email-error' : undefined"
-            :aria-required="true"
             @focus="emit('field-focus', 'email'); clearError()"
             @blur="emailTouched = true; emit('field-blur')"
           >
@@ -52,11 +85,13 @@
             :type="showPassword ? 'text' : 'password'" 
             id="password" 
             v-model="password" 
-            autocomplete="current-password"
+            placeholder="••••••••" 
+            required
+            autocomplete="new-password"
+            minlength="8"
             :disabled="isLoading"
             :aria-invalid="passwordTouched && !passwordValid && password ? 'true' : 'false'"
             :aria-describedby="getPasswordAriaDescribedBy()"
-            :aria-required="true"
             @focus="emit('field-focus', 'password'); clearError()"
             @blur="passwordTouched = true; emit('field-blur')"
           >
@@ -71,10 +106,8 @@
             </svg>
           </button>
         </div>
-        <!-- Show error message only if password is invalid -->
         <span v-if="passwordTouched && !passwordValid && password" id="password-error" class="field-error" role="alert">Password must be at least 8 characters</span>
         
-        <!-- Password Strength Indicator - only show if password is valid (8+ chars) -->
         <div v-if="password && passwordValid && passwordTouched" id="password-strength" class="password-strength" aria-live="polite">
           <div class="strength-bar" role="progressbar" :aria-valuenow="passwordStrength" aria-valuemin="0" aria-valuemax="5" :aria-label="'Password strength: ' + getPasswordStrengthLabel()">
             <div 
@@ -88,21 +121,51 @@
         </div>
       </div>
 
-      <div class="checkbox-group">
-        <label for="remember" class="checkbox-label">
-          <input type="checkbox" id="remember" v-model="remember"> Remember for 30 days
-        </label>
-        <a href="#" class="forgot-password" @click.prevent="handleForgotPassword">Forgot password?</a>
+      <div class="form-group">
+        <label for="confirmPassword">Confirm Password</label>
+        <div class="password-input-wrapper" :class="{ 'valid': confirmPasswordTouched && passwordsMatch, 'invalid': confirmPasswordTouched && !passwordsMatch && confirmPassword }">
+          <input 
+            :type="showConfirmPassword ? 'text' : 'password'" 
+            id="confirmPassword" 
+            v-model="confirmPassword" 
+            placeholder="••••••••" 
+            required
+            autocomplete="new-password"
+            :disabled="isLoading"
+            :aria-invalid="confirmPasswordTouched && !passwordsMatch && confirmPassword ? 'true' : 'false'"
+            :aria-describedby="confirmPasswordTouched && !passwordsMatch && confirmPassword ? 'confirm-password-error' : undefined"
+            @focus="emit('field-focus', 'confirmPassword'); clearError()"
+            @blur="confirmPasswordTouched = true; emit('field-blur')"
+          >
+          <button type="button" class="toggle-password" @click="showConfirmPassword = !showConfirmPassword" :aria-label="showConfirmPassword ? 'Hide password' : 'Show password'" :aria-pressed="showConfirmPassword" :disabled="isLoading">
+            <svg v-if="!showConfirmPassword" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+              <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+              <circle cx="12" cy="12" r="3"></circle>
+            </svg>
+            <svg v-else width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+              <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"></path>
+              <line x1="1" y1="1" x2="23" y2="23"></line>
+            </svg>
+          </button>
+        </div>
+        <span v-if="confirmPasswordTouched && !passwordsMatch && confirmPassword" id="confirm-password-error" class="field-error" role="alert">Passwords do not match</span>
       </div>
 
-      <button type="submit" class="login-btn" :disabled="isLoading || isRateLimited">
-        <span v-if="!isLoading">Log in</span>
+      <div class="checkbox-group">
+        <label for="terms" class="checkbox-label">
+          <input type="checkbox" id="terms" v-model="acceptTerms" required> 
+          I agree to the <a href="#" @click.prevent="handleTermsClick" class="terms-link">Terms & Conditions</a>
+        </label>
+      </div>
+
+      <button type="submit" class="signup-btn" :disabled="isLoading || !acceptTerms">
+        <span v-if="!isLoading">Sign up</span>
         <span v-else class="loading-spinner">
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
             <circle cx="12" cy="12" r="10" opacity="0.25"></circle>
             <path d="M12 2a10 10 0 0 1 10 10" stroke-linecap="round"></path>
           </svg>
-          Logging in...
+          Creating account...
         </span>
       </button>
     </form>
@@ -111,52 +174,60 @@
       <span class="divider-text">or</span>
     </div>
 
-    <button class="google-login-btn" @click="handleGoogleLogin">
+    <button class="google-signup-btn" @click="handleGoogleSignUp">
       <svg class="google-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
         <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/>
         <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/>
         <path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"/>
         <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/>
       </svg>
-      Log in with Google
+      Sign up with Google
     </button>
 
-    <div class="signup-link">
-      Don't have an account? <a href="#" @click.prevent="handleSignUp($event)">Sign up</a>
+    <div class="login-link">
+      Already have an account? <a href="#" @click.prevent="handleLogin">Log in</a>
     </div>
   </div>
 </template>
 
 <script setup>
-import { ref, watch } from 'vue'
+import { ref, watch, computed } from 'vue'
 import { isValidEmail, isValidPassword } from '../utils/validation.js'
 
 import { useRouter } from 'vue-router'
 
 const router = useRouter()
-const emit = defineEmits(['password-visibility-changed', 'field-focus', 'field-blur', 'login-attempt'])
+const emit = defineEmits(['password-visibility-changed', 'field-focus', 'field-blur', 'signup-attempt'])
 
+const name = ref('')
 const email = ref('')
 const password = ref('')
-const remember = ref(false)
+const confirmPassword = ref('')
+const acceptTerms = ref(false)
 const showPassword = ref(false)
+const showConfirmPassword = ref(false)
 const isLoading = ref(false)
 const errorMessage = ref('')
-const loginAttempts = ref(0)
-const isRateLimited = ref(false)
 
-// Validation states
+const nameTouched = ref(false)
 const emailTouched = ref(false)
 const passwordTouched = ref(false)
+const confirmPasswordTouched = ref(false)
+const nameValid = ref(false)
 const emailValid = ref(false)
 const passwordValid = ref(false)
 const passwordStrength = ref(0)
 
-const MAX_ATTEMPTS = 5
-const RATE_LIMIT_DURATION = 60000 // 1 minute
+const passwordsMatch = computed(() => {
+  return password.value === confirmPassword.value && confirmPassword.value.length > 0
+})
 
 watch(showPassword, (newValue) => {
   emit('password-visibility-changed', newValue)
+})
+
+watch(name, (newValue) => {
+  nameValid.value = newValue.trim().length >= 2
 })
 
 watch(email, (newValue) => {
@@ -172,12 +243,8 @@ const calculatePasswordStrength = (pwd) => {
   if (!pwd) return 0
   
   let strength = 0
-  
-  // Length check
   if (pwd.length >= 8) strength++
   if (pwd.length >= 12) strength++
-  
-  // Character variety
   if (/[a-z]/.test(pwd) && /[A-Z]/.test(pwd)) strength++
   if (/\d/.test(pwd)) strength++
   if (/[^a-zA-Z0-9]/.test(pwd)) strength++
@@ -205,16 +272,13 @@ const clearError = () => {
 }
 
 const handleSubmit = async () => {
-  // Clear previous errors
   clearError()
 
-  // Check rate limiting
-  if (isRateLimited.value) {
-    errorMessage.value = 'Too many login attempts. Please try again in a minute.'
+  if (!nameValid.value) {
+    errorMessage.value = 'Please enter your full name.'
     return
   }
 
-  // Validate inputs
   if (!isValidEmail(email.value)) {
     errorMessage.value = 'Please enter a valid email address.'
     return
@@ -225,97 +289,45 @@ const handleSubmit = async () => {
     return
   }
 
+  if (!passwordsMatch.value) {
+    errorMessage.value = 'Passwords do not match.'
+    return
+  }
+
+  if (!acceptTerms.value) {
+    errorMessage.value = 'Please accept the Terms & Conditions.'
+    return
+  }
+
   isLoading.value = true
-  loginAttempts.value++
 
   try {
-    // TODO: Replace with actual API call
-    // Simulating API call for now
     await new Promise(resolve => setTimeout(resolve, 1000))
     
-    // Example API call structure:
-    // const response = await fetch('/api/login', {
-    //   method: 'POST',
-    //   headers: { 
-    //     'Content-Type': 'application/json',
-    //     'X-CSRF-Token': getCsrfToken() // Add CSRF protection
-    //   },
-    //   credentials: 'same-origin',
-    //   body: JSON.stringify({
-    //     email: email.value,
-    //     password: password.value,
-    //     remember: remember.value
-    //   })
-    // })
-    
-    // if (!response.ok) {
-    //   const error = await response.json()
-    //   throw new Error(error.message || 'Login failed')
-    // }
-    
-    // const data = await response.json()
-    
-    // Success - clear sensitive data
-    const success = true // Replace with actual response check
-    password.value = '' // Clear password from memory
-    emit('login-attempt', success)
-    
-    // Reset attempts on success
-    loginAttempts.value = 0
+    const success = true
+    password.value = ''
+    confirmPassword.value = ''
+    emit('signup-attempt', success)
     
   } catch (error) {
-    // Handle different error types
-    if (error.message.includes('network') || error.message.includes('fetch')) {
-      errorMessage.value = 'Network error. Please check your connection and try again.'
-    } else if (error.message.includes('credentials')) {
-      errorMessage.value = 'Invalid email or password. Please try again.'
-    } else {
-      errorMessage.value = error.message || 'An error occurred. Please try again.'
-    }
-    
-    emit('login-attempt', false)
-    
-    // Implement rate limiting after max attempts
-    if (loginAttempts.value >= MAX_ATTEMPTS) {
-      isRateLimited.value = true
-      errorMessage.value = 'Too many failed attempts. Please try again in a minute.'
-      
-      setTimeout(() => {
-        isRateLimited.value = false
-        loginAttempts.value = 0
-      }, RATE_LIMIT_DURATION)
-    }
+    errorMessage.value = error.message || 'An error occurred. Please try again.'
+    emit('signup-attempt', false)
   } finally {
     isLoading.value = false
   }
 }
 
-const handleGoogleLogin = () => {
+const handleGoogleSignUp = () => {
   clearError()
-  emit('login-attempt', true)
-  // TODO: Implement OAuth flow
-  // window.location.href = '/api/auth/google'
+  emit('signup-attempt', true)
 }
 
-const handleForgotPassword = () => {
-  // TODO: Navigate to forgot password page
-  console.log('Forgot password clicked')
+const handleTermsClick = () => {
+  console.log('Terms & Conditions clicked')
 }
 
-const handleSignUp = (event) => {
-  // Prevent any form validation from triggering
-  if (event) {
-    event.preventDefault()
-    event.stopPropagation()
-  }
-  
-  // Reset validation states to prevent errors from showing
-  emailTouched.value = false
-  passwordTouched.value = false
-  clearError()
-  
-  // Navigate to signup
-  router.push('/signup')
+const handleLogin = () => {
+  router.push('/login')
 }
 
 const getPasswordAriaDescribedBy = () => {
@@ -323,7 +335,7 @@ const getPasswordAriaDescribedBy = () => {
   if (passwordTouched.value && !passwordValid.value && password.value) {
     ids.push('password-error')
   }
-  if (password.value && passwordTouched.value) {
+  if (password.value && passwordValid.value && passwordTouched.value) {
     ids.push('password-strength')
   }
   return ids.length > 0 ? ids.join(' ') : undefined
@@ -331,8 +343,7 @@ const getPasswordAriaDescribedBy = () => {
 </script>
 
 <style scoped>
-.login-container {
-  /* CSS Variables */
+.signup-container {
   --color-primary: #667eea;
   --color-primary-dark: #764ba2;
   --color-text-primary: #1a1a1a;
@@ -364,7 +375,6 @@ const getPasswordAriaDescribedBy = () => {
   --transition-fast: 0.2s ease-out;
   --transition-normal: 0.3s ease;
   
-  /* Styles */
   background: var(--color-background);
   border-radius: var(--radius-lg);
   box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
@@ -490,13 +500,11 @@ input[type="text"] {
   font-family: inherit;
 }
 
-/* Hide native password reveal button in Edge/IE */
 input[type="password"]::-ms-reveal,
 input[type="password"]::-ms-clear {
   display: none;
 }
 
-/* Hide native password reveal button in Chrome/Safari */
 input[type="password"]::-webkit-credentials-auto-fill-button,
 input[type="password"]::-webkit-textfield-decoration-container {
   display: none !important;
@@ -510,7 +518,6 @@ input[type="text"]:focus {
   box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
 }
 
-/* Enhanced focus styles for keyboard navigation */
 input[type="email"]:focus-visible,
 input[type="password"]:focus-visible,
 input[type="text"]:focus-visible {
@@ -603,11 +610,15 @@ input:disabled {
 }
 
 .checkbox-group {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
   margin-bottom: 28px;
   font-size: 14px;
+}
+
+.checkbox-label {
+  margin-bottom: 0;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
 }
 
 input[type="checkbox"] {
@@ -615,24 +626,29 @@ input[type="checkbox"] {
   cursor: pointer;
 }
 
-.forgot-password {
+input[type="checkbox"]:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 2px;
+}
+
+.terms-link {
   color: var(--color-primary);
   text-decoration: none;
   font-weight: 500;
   transition: color var(--transition-normal);
 }
 
-.forgot-password:hover {
+.terms-link:hover {
   color: var(--color-primary-dark);
 }
 
-.forgot-password:focus-visible {
+.terms-link:focus-visible {
   outline: 2px solid var(--color-primary);
   outline-offset: 2px;
   border-radius: var(--radius-sm);
 }
 
-.login-btn {
+.signup-btn {
   width: 100%;
   padding: var(--spacing-md);
   background: var(--color-text-primary);
@@ -646,22 +662,22 @@ input[type="checkbox"] {
   margin-bottom: 16px;
 }
 
-.login-btn:hover:not(:disabled) {
+.signup-btn:hover:not(:disabled) {
   background: #333;
   transform: translateY(-2px);
   box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
 }
 
-.login-btn:active:not(:disabled) {
+.signup-btn:active:not(:disabled) {
   transform: translateY(0);
 }
 
-.login-btn:focus-visible {
+.signup-btn:focus-visible {
   outline: 2px solid var(--color-primary);
   outline-offset: 2px;
 }
 
-.login-btn:disabled {
+.signup-btn:disabled {
   background: var(--color-text-tertiary);
   cursor: not-allowed;
   opacity: 0.6;
@@ -711,7 +727,7 @@ input[type="checkbox"] {
   font-size: 13px;
 }
 
-.google-login-btn {
+.google-signup-btn {
   width: 100%;
   padding: var(--spacing-md);
   background: var(--color-background);
@@ -728,13 +744,13 @@ input[type="checkbox"] {
   color: var(--color-text-primary);
 }
 
-.google-login-btn:hover {
+.google-signup-btn:hover {
   background: var(--color-background-hover);
   border-color: var(--color-border-light);
   transform: translateY(-2px);
 }
 
-.google-login-btn:focus-visible {
+.google-signup-btn:focus-visible {
   outline: 2px solid var(--color-primary);
   outline-offset: 2px;
 }
@@ -744,44 +760,32 @@ input[type="checkbox"] {
   height: 18px;
 }
 
-.signup-link {
+.login-link {
   text-align: center;
   font-size: 14px;
   color: var(--color-text-secondary);
   margin-top: var(--spacing-2xl);
 }
 
-.signup-link a {
+.login-link a {
   color: var(--color-primary);
   text-decoration: none;
   font-weight: 600;
   transition: color var(--transition-normal);
 }
 
-.signup-link a:hover {
+.login-link a:hover {
   color: var(--color-primary-dark);
 }
 
-.signup-link a:focus-visible {
+.login-link a:focus-visible {
   outline: 2px solid var(--color-primary);
   outline-offset: 2px;
   border-radius: var(--radius-sm);
 }
 
-.checkbox-label {
-  margin-bottom: 0;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-}
-
-input[type="checkbox"]:focus-visible {
-  outline: 2px solid var(--color-primary);
-  outline-offset: 2px;
-}
-
 @media (max-width: 768px) {
-  .login-form {
+  .signup-container {
     padding: 32px 24px;
   }
 
@@ -796,7 +800,7 @@ input[type="checkbox"]:focus-visible {
 }
 
 @media (max-width: 480px) {
-  .login-form {
+  .signup-container {
     padding: 24px 20px;
     min-width: 280px;
   }
@@ -826,15 +830,8 @@ input[type="checkbox"]:focus-visible {
     font-size: 14px;
   }
 
-  .checkbox-group {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 12px;
-    margin-bottom: 20px;
-  }
-
-  .login-btn,
-  .google-login-btn {
+  .signup-btn,
+  .google-signup-btn {
     padding: 12px;
     font-size: 14px;
   }
@@ -843,7 +840,7 @@ input[type="checkbox"]:focus-visible {
     margin: 20px 0;
   }
 
-  .signup-link {
+  .login-link {
     font-size: 13px;
     margin-top: 20px;
   }
