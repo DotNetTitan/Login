@@ -242,6 +242,7 @@ onUnmounted(() => {
   justify-content: center;
   gap: 20px;
   top: 35%;
+  z-index: 2;
 }
 
 .eye {
@@ -307,6 +308,7 @@ onUnmounted(() => {
   left: 50%;
   transform: translateX(-50%);
   transition: all 0.3s ease;
+  z-index: 1;
 }
 
 .mouth.small {
@@ -373,22 +375,23 @@ onUnmounted(() => {
 
 /* Happy mouth - bigger smile */
 .mouth.happy {
-  width: 24px;
-  height: 14px;
-  border-radius: 0 0 12px 12px;
+  width: 22px;
+  height: 13px;
+  border-radius: 0 0 11px 11px;
+  bottom: 18%;
 }
 
 .mouth.surprised-happy {
-  width: 18px;
-  height: 18px;
+  width: 16px;
+  height: 16px;
   border-radius: 50%;
   bottom: 18%;
   background: #2a2a2a;
 }
 
 .mouth.small.surprised-happy {
-  width: 14px;
-  height: 14px;
+  width: 13px;
+  height: 13px;
   bottom: 12%;
 }
 
@@ -507,11 +510,12 @@ onUnmounted(() => {
 }
 
 .mouth.big-smile {
-  width: 28px !important;
-  height: 18px !important;
-  border-radius: 0 0 14px 14px !important;
-  bottom: 12% !important;
+  width: 26px !important;
+  height: 16px !important;
+  border-radius: 0 0 13px 13px !important;
+  bottom: 15% !important;
   background: #2a2a2a !important;
+  z-index: 1 !important;
 }
 
 .eyebrows.excited .eyebrow {
@@ -596,6 +600,29 @@ onUnmounted(() => {
   .char-body.yellow {
     width: 72px;
     height: 72px;
+  }
+
+  /* Reduce mouth sizes on mobile */
+  .mouth.happy {
+    width: 18px !important;
+    height: 11px !important;
+    bottom: 20% !important;
+  }
+
+  .mouth.big-smile {
+    width: 22px !important;
+    height: 14px !important;
+    bottom: 18% !important;
+  }
+
+  .mouth.small {
+    width: 13px !important;
+    height: 7px !important;
+  }
+
+  .mouth.small.worried {
+    width: 14px !important;
+    height: 8px !important;
   }
 }
 </style>
