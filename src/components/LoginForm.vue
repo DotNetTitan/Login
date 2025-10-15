@@ -74,10 +74,11 @@
             </svg>
           </button>
         </div>
+        <!-- Show error message only if password is invalid -->
         <span v-if="passwordTouched && !passwordValid && password" id="password-error" class="field-error" role="alert">Password must be at least 8 characters</span>
         
-        <!-- Password Strength Indicator -->
-        <div v-if="password && passwordTouched" id="password-strength" class="password-strength" aria-live="polite">
+        <!-- Password Strength Indicator - only show if password is valid (8+ chars) -->
+        <div v-if="password && passwordValid && passwordTouched" id="password-strength" class="password-strength" aria-live="polite">
           <div class="strength-bar" role="progressbar" :aria-valuenow="passwordStrength" aria-valuemin="0" aria-valuemax="5" :aria-label="'Password strength: ' + getPasswordStrengthLabel()">
             <div 
               class="strength-fill" 
