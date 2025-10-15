@@ -346,4 +346,73 @@ input[type="checkbox"] {
 .signup-link a:hover {
   color: #764ba2;
 }
+
+@media (max-width: 768px) {
+  .login-form {
+    padding: 32px 24px;
+  }
+
+  h1 {
+    font-size: 24px;
+  }
+
+  .subtitle {
+    font-size: 13px;
+    margin-bottom: 24px;
+  }
+}
+
+@media (max-width: 480px) {
+  .login-form {
+    padding: 24px 20px;
+    min-width: 280px;
+  }
+
+  h1 {
+    font-size: 22px;
+    margin-bottom: 8px;
+  }
+
+  .subtitle {
+    font-size: 12px;
+    margin-bottom: 20px;
+  }
+
+  .form-group {
+    margin-bottom: 20px;
+  }
+
+  label {
+    font-size: 13px;
+  }
+
+  input[type="email"],
+  input[type="password"],
+  input[type="text"] {
+    padding: 10px 12px;
+    font-size: 14px;
+  }
+
+  .checkbox-group {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+    margin-bottom: 20px;
+  }
+
+  .login-btn,
+  .google-login-btn {
+    padding: 12px;
+    font-size: 14px;
+  }
+
+  .divider {
+    margin: 20px 0;
+  }
+
+  .signup-link {
+    font-size: 13px;
+    margin-top: 20px;
+  }
+}
 </style>

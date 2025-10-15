@@ -577,7 +577,38 @@ onUnmounted(() => {
 
 @media (max-width: 768px) {
   .characters-section {
-    min-height: 250px;
+    min-height: 200px;
+    gap: 15px;
+  }
+
+  .character {
+    transform: scale(0.9);
+  }
+}
+
+@media (max-width: 480px) {
+  .characters-section {
+    min-height: 150px;
+    gap: 10px;
+  }
+
+  .character {
+    transform: scale(0.75);
+  }
+
+  .char-body.orange {
+    width: 85px;
+    height: 55px;
+  }
+
+  .char-body.black {
+    width: 65px;
+    height: 80px;
+  }
+
+  .char-body.yellow {
+    width: 72px;
+    height: 72px;
   }
 }
 </style>
