@@ -1,0 +1,7 @@
+# Prevent indexing of login pages
+User-agent: *
+Disallow: /
+
+# If you have public pages, allow them specifically:
+# Allow: /about
+# Allow: /contact
