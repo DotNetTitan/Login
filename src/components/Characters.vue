@@ -180,26 +180,58 @@ onUnmounted(() => {
   justify-content: center;
   font-size: 40px;
   overflow: hidden;
+  transition: all 0.3s ease;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
 }
 
 .char-body.orange {
-  background: #ff9933;
+  background: linear-gradient(135deg, #ffaa70 0%, #ff8844 50%, #ff7733 100%);
   width: 100px;
-  height: 60px;
+  height: 65px;
+  border-radius: 50% 50% 45% 45%;
+  box-shadow: 0 10px 25px rgba(255, 120, 60, 0.4), inset 0 -5px 15px rgba(255, 140, 80, 0.3);
+}
+
+.char-body.orange::before {
+  content: '';
+  position: absolute;
+  width: 18px;
+  height: 18px;
+  background: radial-gradient(circle, rgba(255, 100, 100, 0.6) 0%, rgba(255, 150, 150, 0.3) 50%, transparent 70%);
   border-radius: 50%;
+  bottom: 25%;
+  left: 8%;
+  filter: blur(4px);
+  z-index: 1;
+}
+
+.char-body.orange::after {
+  content: '';
+  position: absolute;
+  width: 18px;
+  height: 18px;
+  background: radial-gradient(circle, rgba(255, 100, 100, 0.6) 0%, rgba(255, 150, 150, 0.3) 50%, transparent 70%);
+  border-radius: 50%;
+  bottom: 25%;
+  right: 8%;
+  filter: blur(4px);
+  z-index: 1;
 }
 
 .char-body.black {
-  background: #1a1a1a;
-  width: 70px;
-  height: 90px;
+  background: linear-gradient(135deg, #2a2a2a 0%, #0a0a0a 100%);
+  width: 75px;
+  height: 95px;
+  border-radius: 45% 45% 50% 50%;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
 }
 
 .char-body.yellow {
-  background: #ffdd00;
+  background: linear-gradient(135deg, #ffe44d 0%, #ffd700 100%);
   width: 85px;
   height: 85px;
   border-radius: 50%;
+  box-shadow: 0 8px 20px rgba(255, 221, 0, 0.3);
 }
 
 .eyes {
@@ -221,26 +253,48 @@ onUnmounted(() => {
   display: flex;
   align-items: center;
   justify-content: center;
-  overflow: hidden;
+  overflow: visible;
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .eye.small {
-  width: 16px;
-  height: 16px;
+  width: 18px;
+  height: 18px;
+}
+
+.eye::after {
+  content: '';
+  position: absolute;
+  width: 4px;
+  height: 4px;
+  background: white;
+  border-radius: 50%;
+  top: 25%;
+  left: 30%;
+  opacity: 0.6;
+  pointer-events: none;
+}
+
+.eye.small::after {
+  width: 3.5px;
+  height: 3.5px;
+  top: 22%;
+  left: 28%;
 }
 
 .pupil {
   position: absolute;
   width: 12px;
   height: 12px;
-  background: black;
+  background: radial-gradient(circle at 30% 30%, #333 0%, #000 70%);
   border-radius: 50%;
-  transition: transform 0.05s ease-out;
+  transition: transform 0.1s ease-out;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
 }
 
 .pupil.small {
-  width: 8px;
-  height: 8px;
+  width: 9px;
+  height: 9px;
 }
 
 .mouth {
@@ -248,48 +302,65 @@ onUnmounted(() => {
   bottom: 20%;
   width: 20px;
   height: 12px;
-  border: 2px solid black;
+  border: 2.5px solid rgba(0, 0, 0, 0.8);
   border-top: none;
   border-radius: 0 0 10px 10px;
+  left: 50%;
+  transform: translateX(-50%);
+  transition: all 0.3s ease;
 }
 
 .mouth.small {
   width: 15px;
   height: 8px;
   bottom: 15%;
+  border-width: 2px;
 }
 
 .mouth.surprised {
   width: 16px;
   height: 16px;
   border-radius: 50%;
-  border: 2px solid black;
+  border: 2.5px solid rgba(0, 0, 0, 0.8);
   bottom: 18%;
+  background: rgba(0, 0, 0, 0.05);
 }
 
 .mouth.small.surprised {
   width: 12px;
   height: 12px;
   bottom: 12%;
+  border-width: 2px;
 }
 
 /* Worried mouth - slightly downturned */
 .mouth.worried {
   border-radius: 0 0 8px 8px;
+  width: 18px;
+  height: 10px;
+  border-width: 2.5px;
+}
+
+.mouth.small.worried {
+  width: 17px;
+  height: 10px;
+  border-width: 2.5px;
 }
 
 .mouth.surprised-worried {
-  width: 14px;
-  height: 14px;
+  width: 16px;
+  height: 16px;
   border-radius: 50%;
-  border: 2px solid black;
+  border: 2.5px solid rgba(0, 0, 0, 0.8);
   bottom: 15%;
+  background: rgba(0, 0, 0, 0.08);
 }
 
 .mouth.small.surprised-worried {
-  width: 10px;
-  height: 10px;
-  bottom: 10%;
+  width: 14px;
+  height: 14px;
+  bottom: 12%;
+  border-width: 2.5px;
 }
 
 /* Cool mouth - straight line (neutral) */
@@ -297,7 +368,7 @@ onUnmounted(() => {
   border-radius: 0;
   height: 3px;
   border: none;
-  border-bottom: 2px solid black;
+  border-bottom: 2.5px solid rgba(0, 0, 0, 0.8);
   bottom: 22%;
 }
 
@@ -305,8 +376,9 @@ onUnmounted(() => {
   width: 12px;
   height: 18px;
   border-radius: 50%;
-  border: 2px solid black;
+  border: 2.5px solid rgba(0, 0, 0, 0.8);
   bottom: 18%;
+  background: rgba(0, 0, 0, 0.05);
 }
 
 /* Happy mouth - bigger smile */
@@ -314,20 +386,23 @@ onUnmounted(() => {
   width: 24px;
   height: 14px;
   border-radius: 0 0 12px 12px;
+  border-width: 2.5px;
 }
 
 .mouth.surprised-happy {
   width: 18px;
   height: 18px;
   border-radius: 50%;
-  border: 2px solid black;
+  border: 2.5px solid rgba(0, 0, 0, 0.8);
   bottom: 18%;
+  background: rgba(0, 0, 0, 0.05);
 }
 
 .mouth.small.surprised-happy {
   width: 14px;
   height: 14px;
   bottom: 12%;
+  border-width: 2px;
 }
 
 .eyebrows {
@@ -348,15 +423,16 @@ onUnmounted(() => {
 .eyebrow {
   width: 20px;
   height: 3px;
-  background: black;
+  background: linear-gradient(180deg, rgba(0, 0, 0, 0.9) 0%, rgba(0, 0, 0, 0.7) 100%);
   border-radius: 2px;
   position: relative;
   transition: transform 0.3s ease;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
 }
 
 .eyebrow.small {
   width: 14px;
-  height: 2px;
+  height: 2.5px;
 }
 
 /* Worried character - eyebrows angled up (concerned) */
@@ -414,15 +490,7 @@ onUnmounted(() => {
 
 .char-body.shy {
   animation: blush 0.5s ease-out forwards;
-}
-
-@keyframes blush {
-  0% {
-    filter: brightness(1);
-  }
-  100% {
-    filter: brightness(1.1);
-  }
+  filter: brightness(1.15) saturate(1.2);
 }
 
 .eyes.wide .eye {
@@ -456,6 +524,7 @@ onUnmounted(() => {
   height: 18px !important;
   border-radius: 0 0 14px 14px !important;
   border-width: 3px !important;
+  border-color: rgba(0, 0, 0, 0.9) !important;
 }
 
 .eyebrows.excited .eyebrow {
