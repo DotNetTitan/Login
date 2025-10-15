@@ -302,8 +302,7 @@ onUnmounted(() => {
   bottom: 20%;
   width: 20px;
   height: 12px;
-  border: 2.5px solid rgba(0, 0, 0, 0.8);
-  border-top: none;
+  background: #2a2a2a;
   border-radius: 0 0 10px 10px;
   left: 50%;
   transform: translateX(-50%);
@@ -314,23 +313,20 @@ onUnmounted(() => {
   width: 15px;
   height: 8px;
   bottom: 15%;
-  border-width: 2px;
 }
 
 .mouth.surprised {
   width: 16px;
   height: 16px;
   border-radius: 50%;
-  border: 2.5px solid rgba(0, 0, 0, 0.8);
   bottom: 18%;
-  background: rgba(0, 0, 0, 0.05);
+  background: #2a2a2a;
 }
 
 .mouth.small.surprised {
   width: 12px;
   height: 12px;
   bottom: 12%;
-  border-width: 2px;
 }
 
 /* Worried mouth - slightly downturned */
@@ -338,47 +334,41 @@ onUnmounted(() => {
   border-radius: 0 0 8px 8px;
   width: 18px;
   height: 10px;
-  border-width: 2.5px;
 }
 
 .mouth.small.worried {
   width: 17px;
   height: 10px;
-  border-width: 2.5px;
 }
 
 .mouth.surprised-worried {
   width: 16px;
   height: 16px;
   border-radius: 50%;
-  border: 2.5px solid rgba(0, 0, 0, 0.8);
   bottom: 15%;
-  background: rgba(0, 0, 0, 0.08);
+  background: #2a2a2a;
 }
 
 .mouth.small.surprised-worried {
   width: 14px;
   height: 14px;
   bottom: 12%;
-  border-width: 2.5px;
 }
 
 /* Cool mouth - straight line (neutral) */
 .mouth.cool {
-  border-radius: 0;
+  border-radius: 2px;
   height: 3px;
-  border: none;
-  border-bottom: 2.5px solid rgba(0, 0, 0, 0.8);
   bottom: 22%;
+  background: #2a2a2a;
 }
 
 .mouth.surprised-cool {
   width: 12px;
   height: 18px;
   border-radius: 50%;
-  border: 2.5px solid rgba(0, 0, 0, 0.8);
   bottom: 18%;
-  background: rgba(0, 0, 0, 0.05);
+  background: #2a2a2a;
 }
 
 /* Happy mouth - bigger smile */
@@ -386,23 +376,20 @@ onUnmounted(() => {
   width: 24px;
   height: 14px;
   border-radius: 0 0 12px 12px;
-  border-width: 2.5px;
 }
 
 .mouth.surprised-happy {
   width: 18px;
   height: 18px;
   border-radius: 50%;
-  border: 2.5px solid rgba(0, 0, 0, 0.8);
   bottom: 18%;
-  background: rgba(0, 0, 0, 0.05);
+  background: #2a2a2a;
 }
 
 .mouth.small.surprised-happy {
   width: 14px;
   height: 14px;
   bottom: 12%;
-  border-width: 2px;
 }
 
 .eyebrows {
@@ -523,8 +510,8 @@ onUnmounted(() => {
   width: 28px !important;
   height: 18px !important;
   border-radius: 0 0 14px 14px !important;
-  border-width: 3px !important;
-  border-color: rgba(0, 0, 0, 0.9) !important;
+  bottom: 12% !important;
+  background: #2a2a2a !important;
 }
 
 .eyebrows.excited .eyebrow {
