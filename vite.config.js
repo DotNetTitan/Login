@@ -5,7 +5,7 @@ export default defineConfig({
   base: '/Login/',
   plugins: [vue()],
   build: {
-    minify: 'terser',
+    minify: 'esbuild',
     cssMinify: true,
     rollupOptions: {
       output: {
