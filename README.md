@@ -1,6 +1,6 @@
-# Animated Login Page
+# Animated Login & Sign Up Pages
 
-An interactive login form featuring animated characters that react to user interactions. Built with Vue 3, Vite, and modern web technologies.
+Interactive login and sign up forms featuring animated characters that react to user interactions. Built with Vue 3, Vue Router, Vite, and modern web technologies.
 
 ![License](https://img.shields.io/badge/license-MIT-blue.svg)
 ![Vue](https://img.shields.io/badge/Vue-3.x-green.svg)
@@ -15,11 +15,14 @@ An interactive login form featuring animated characters that react to user inter
 - **Success/Error Animations** - Visual feedback with character animations
 - **Responsive Design** - Optimized for desktop, tablet, and mobile devices
 - **Modern UI** - Clean, professional design with smooth transitions
+- **Multi-page Navigation** - Seamless routing between login and sign up pages
 
 ### Form Validation
 - **Real-time Validation** - Instant feedback as users type
 - **Email Validation** - Proper email format checking with visual indicators
 - **Password Strength Indicator** - 5-level strength meter with color-coded feedback
+- **Password Confirmation** - Validates matching passwords on sign up
+- **Name Validation** - Full name requirement for sign up
 - **Field-level Error Messages** - Clear, actionable error messages
 - **Visual Validation States** - Green checkmarks for valid inputs, red indicators for errors
 
@@ -38,10 +41,12 @@ An interactive login form featuring animated characters that react to user inter
 - **Error Announcements** - Screen readers announce validation errors
 
 ### Developer Experience
+- **Vue Router** - Client-side routing with proper URL management
 - **CSS Custom Properties** - Maintainable theming with CSS variables
 - **Component Architecture** - Modular Vue 3 Composition API
 - **Type Safety Ready** - Structured for TypeScript migration
 - **Clean Code** - Well-organized and documented codebase
+- **GitHub Pages Ready** - SPA routing configured for deployment
 
 ## Demo
 
@@ -101,6 +106,7 @@ Each character features:
 ## Tech Stack
 
 - **Vue 3** - Progressive JavaScript framework
+- **Vue Router** - Official routing library for Vue.js
 - **Vite** - Next-generation frontend tooling
 - **CSS3** - Modern styling with gradients, shadows, and animations
 - **JavaScript ES6+** - Modern JavaScript features
@@ -112,12 +118,19 @@ Login/
 ├── src/
 │   ├── components/
 │   │   ├── Characters.vue    # Animated characters component
-│   │   └── LoginForm.vue     # Login form with validation
+│   │   ├── LoginForm.vue     # Login form with validation
+│   │   └── SignUpForm.vue    # Sign up form with validation
+│   ├── views/
+│   │   ├── LoginView.vue     # Login page view
+│   │   └── SignUpView.vue    # Sign up page view
+│   ├── router/
+│   │   └── index.js          # Vue Router configuration
 │   ├── utils/
 │   │   └── validation.js     # Validation and sanitization utilities
 │   ├── App.vue               # Main application component
 │   └── main.js               # Application entry point
-├── public/                   # Static assets
+├── public/
+│   └── 404.html              # GitHub Pages SPA redirect handler
 ├── .github/
 │   └── workflows/
 │       └── deploy.yml        # GitHub Pages deployment workflow
