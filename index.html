@@ -8,9 +8,19 @@
   <meta name="theme-color" content="#667eea">
   <link rel="icon" type="image/svg+xml" href="/Login/favicon.svg">
   <title>Login - Welcome Back</title>
-  <script type="module" crossorigin src="/Login/assets/index-CB3_1TT1.js"></script>
-  <link rel="modulepreload" crossorigin href="/Login/assets/vendor-BoGhIXdw.js">
-  <link rel="stylesheet" crossorigin href="/Login/assets/index-M_9lf0Iy.css">
+  <script>
+    // Handle GitHub Pages SPA redirect
+    (function(){
+      var redirect = sessionStorage.redirect;
+      delete sessionStorage.redirect;
+      if (redirect && redirect != location.href) {
+        history.replaceState(null, null, redirect);
+      }
+    })();
+  </script>
+  <script type="module" crossorigin src="/Login/assets/index-DbWeQli8.js"></script>
+  <link rel="modulepreload" crossorigin href="/Login/assets/vendor-C9Y9lA8P.js">
+  <link rel="stylesheet" crossorigin href="/Login/assets/index-BItAwrAx.css">
 </head>
 <body>
   <div id="app"></div>
